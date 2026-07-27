@@ -8,9 +8,9 @@ PISTON_ENV=$(cat .piston_env 2> /dev/null || echo dev)
 
 docker_compose(){
     if [ -f "docker-compose.$PISTON_ENV.yaml" ]; then
-        docker-compose -f "docker-compose.$PISTON_ENV.yaml" "$@"
+        docker compose -f "docker-compose.$PISTON_ENV.yaml" "$@"
     else
-        docker-compose "$@"
+        docker compose "$@"
     fi
 }
 

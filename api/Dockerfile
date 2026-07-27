@@ -1,4 +1,4 @@
-FROM buildpack-deps:buster AS isolate
+FROM buildpack-deps:trixie AS isolate
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git libcap-dev && \
     rm -rf /var/lib/apt/lists/* && \
@@ -8,16 +8,16 @@ RUN apt-get update && \
     make -j$(nproc) install && \
     rm -rf /tmp/*
 
-FROM node:15.10.0-buster-slim
+FROM node:current-trixie-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN dpkg-reconfigure -p critical dash
 RUN apt-get update && \
     apt-get install -y libxml2 gnupg tar coreutils util-linux libc6-dev \
-    binutils build-essential locales libpcre3-dev libevent-dev libgmp3-dev \
-    libncurses6 libncurses5 libedit-dev libseccomp-dev rename procps python3 \
-    libreadline-dev libblas-dev liblapack-dev libpcre3-dev libarpack2-dev \
+    binutils build-essential locales libevent-dev libgmp3-dev \
+    libncurses6 libedit-dev libseccomp-dev rename procps python3 \
+    libreadline-dev libblas-dev liblapack-dev libarpack2-dev \
     libfftw3-dev libglpk-dev libqhull-dev libqrupdate-dev libsuitesparse-dev \
     libsundials-dev libpcre2-dev libcap-dev && \
     rm -rf /var/lib/apt/lists/*
@@ -29,7 +29,7 @@ RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 
 WORKDIR /piston_api
 COPY ["package.json", "package-lock.json", "./"]
-RUN npm install
+RUN npm install && npm audit fix
 COPY ./src ./src
 
 CMD ["/piston_api/src/docker-entrypoint.sh"]
