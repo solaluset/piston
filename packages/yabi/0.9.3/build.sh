@@ -10,7 +10,7 @@ curl "https://www.python.org/ftp/python/3.14.6/Python-3.14.6.tgz" -o python.tar.
 tar xzf python.tar.gz --strip-components=1
 rm python.tar.gz
 
-./configure --prefix "$PREFIX" --with-ensurepip=install
+./configure --prefix "$PREFIX" --with-ensurepip=install --enable-optimizations --with-lto
 make -j$(nproc)
 make install -j$(nproc)
 
