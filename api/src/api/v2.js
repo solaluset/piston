@@ -271,6 +271,7 @@ router.get('/runtimes', (req, res) => {
             version: rt.version.raw,
             aliases: rt.aliases,
             runtime: rt.runtime,
+            runtime_version: rt.runtime_version.raw,
         };
     });
 

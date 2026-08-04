@@ -14,6 +14,7 @@ class Runtime {
         aliases,
         pkgdir,
         runtime,
+        runtime_version,
         timeouts,
         cpu_times,
         memory_limits,
@@ -27,6 +28,7 @@ class Runtime {
         this.aliases = aliases || [];
         this.pkgdir = pkgdir;
         this.runtime = runtime;
+        this.runtime_version = runtime_version || version;
         this.timeouts = timeouts;
         this.cpu_times = cpu_times;
         this.memory_limits = memory_limits;
@@ -140,9 +142,10 @@ class Runtime {
                     new Runtime({
                         language: lang.language,
                         aliases: lang.aliases,
-                        version,
+                        version: lang.version ? semver.parse(lang.version) : version,
                         pkgdir: package_dir,
                         runtime: language,
+                        runtime_version: version,
                         ...Runtime.compute_all_limits(
                             lang.language,
                             lang.limit_overrides
