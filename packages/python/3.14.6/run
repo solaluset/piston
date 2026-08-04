@@ -1,0 +1,14 @@
+#!/bin/bash
+
+case "${PISTON_LANGUAGE}" in
+    python)
+        python3.14 "$@"
+        ;;
+    yabi)
+        yabi "$@"
+        ;;
+    *)
+        echo "How did you get here? (${PISTON_LANGUAGE})"
+        exit 1
+        ;;
+esac
