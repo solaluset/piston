@@ -1,0 +1,61 @@
+diff --git a/Makefile b/Makefile
+index 8ae7e7f..0386c45 100644
+--- a/Makefile
++++ b/Makefile
+@@ -5,8 +5,8 @@
+ VERSION=2.6
+ YEAR=2026
+ 
+-PROGRAMS=isolate isolate-check-environment isolate-cg-keeper
+-MANPAGES=isolate.1 isolate-check-environment.8 isolate-cg-keeper.8
++PROGRAMS=isolate isolate-check-environment
++MANPAGES=isolate.1 isolate-check-environment.8
+ CONFIGS=default.cf systemd/isolate.slice systemd/isolate.service
+ 
+ all: $(PROGRAMS) $(MANPAGES) $(addsuffix .html, $(MANPAGES)) $(CONFIGS)
+@@ -90,7 +90,6 @@ clean:
+ install: $(PROGRAMS) $(CONFIGS)
+ 	install -d $(DESTDIR)$(BINDIR) $(DESTDIR)$(SBINDIR) $(DESTDIR)$(BOXDIR) $(DESTDIR)$(CONFIGDIR) $(DESTDIR)$(UNITDIR)
+ 	install isolate-check-environment $(DESTDIR)$(BINDIR)
+-	install isolate-cg-keeper $(DESTDIR)$(SBINDIR)
+ 	install -m 4755 isolate $(DESTDIR)$(BINDIR)
+ 	install -m 644 default.cf $(DESTDIR)$(CONFIG)
+ 	install -m 644 systemd/isolate.slice systemd/isolate.service $(DESTDIR)$(UNITDIR)
+@@ -98,7 +97,7 @@ install: $(PROGRAMS) $(CONFIGS)
+ install-doc: $(MANPAGES)
+ 	install -d $(DESTDIR)$(MAN1DIR) $(DESTDIR)$(MAN8DIR)
+ 	install -m 644 isolate.1 $(DESTDIR)$(MAN1DIR)/
+-	install -m 644 isolate-check-environment.8 isolate-cg-keeper.8 $(DESTDIR)$(MAN8DIR)/
++	install -m 644 isolate-check-environment.8 $(DESTDIR)$(MAN8DIR)/
+ 
+ release: $(addsuffix .html,$(MANPAGES))
+ 	git tag v$(VERSION)
+diff --git a/default.cf.in b/default.cf.in
+index 812066a..1d92a96 100644
+--- a/default.cf.in
++++ b/default.cf.in
+@@ -11,8 +11,7 @@ lock_root = /run/isolate/locks
+ # Control group under which we place our subgroups
+ # Either an explicit path to a subdirectory in cgroupfs, or "auto:file" to read
+ # the path from "file", where it is put by isolate-cg-helper.
+-# cg_root = /sys/fs/cgroup/isolate.slice/isolate.service
+-cg_root = auto:/run/isolate/cgroup
++cg_root = /sys/fs/cgroup/isolate
+ 
+ # There are two ways how to configure the block of UIDs and GIDs
+ # used for sandboxes:
+@@ -24,10 +23,10 @@ cg_root = auto:/run/isolate/cgroup
+ #
+ #   - You can manually configure first_uid, first_gid, and num_boxes.
+ 
+-subid_user = isolate
+-# first_uid = 60000
+-# first_gid = 60000
+-# num_boxes = 1000
++# subid_user = isolate
++first_uid = 60000
++first_gid = 60000
++num_boxes = 2147483647
+ 
+ # A bit mask of system call restrictions (default: all restricted, 0=none restricted)
+ # See the section "System call restrictions" in man isolate.

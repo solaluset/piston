@@ -1,10 +1,12 @@
 FROM buildpack-deps:trixie AS isolate
+COPY ./isolate.patch /tmp
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git libcap-dev && \
+    apt-get install -y --no-install-recommends git libcap-dev libseccomp-dev && \
     rm -rf /var/lib/apt/lists/* && \
-    git clone https://github.com/envicutor/isolate.git /tmp/isolate/ && \
+    git clone https://github.com/ioi/isolate.git /tmp/isolate/ && \
     cd /tmp/isolate && \
-    git checkout af6db68042c3aa0ded80787fbb78bc0846ea2114 && \
+    git checkout cf03a9025adaec7d281b7fce805592e41a1d955a && \
+    git apply /tmp/isolate.patch && \
     make -j$(nproc) install && \
     rm -rf /tmp/*
 
