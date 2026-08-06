@@ -179,6 +179,8 @@ router.ws('/connect', async (ws, req) => {
                                     type: 'runtime',
                                     language: job.runtime.language,
                                     version: job.runtime.version.raw,
+                                    runtime: job.runtime.runtime,
+                                    runtime_version: job.runtime.runtime_version.raw,
                                 })
                             );
 

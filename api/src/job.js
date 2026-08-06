@@ -407,6 +407,8 @@ class Job {
             run,
             language: this.runtime.language,
             version: this.runtime.version.raw,
+            runtime: this.runtime.runtime,
+            runtime_version: this.runtime.runtime_version.raw,
         };
     }
 
