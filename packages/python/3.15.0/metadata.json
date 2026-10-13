@@ -1,0 +1,15 @@
+{
+    "language": "python",
+    "version": "3.15.0",
+    "provides": [
+        {
+            "language": "python",
+            "aliases": ["py", "py3", "python3", "python3.15"]
+        },
+        {
+            "language": "yabi",
+            "version": "0.10.0",
+            "aliases": ["by", "bython", "yabi-bython"]
+        }
+    ]
+}
