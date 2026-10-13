@@ -91,7 +91,7 @@ class Package {
 
         await new Promise((resolve, reject) => {
             const proc = cp.exec(
-                `bash -c 'cd "${this.install_path}" && tar xzf ${pkgpath}'`
+                `bash -c 'cd "${this.install_path}" && tar xzf pkg.tar.gz && rm pkg.tar.gz'`
             );
 
             proc.once('exit', (code, _) => {
